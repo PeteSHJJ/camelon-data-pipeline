@@ -6,7 +6,7 @@ from utils.province_extractor import get_province
 import pandas as pd 
 
 # Set up database connection
-engine = connect_to_db()
+con = connect_to_db()
 
 # Crawl news articles
 thairath_crawler = ThairathCrawler()
@@ -32,7 +32,7 @@ merged_df['province'] = province_list
 
 
 # Insert data into the database
-insert_data_into_table(engine, merged_df)
+insert_data_into_table(con, merged_df)
 
 # Print success message
 print("Data pipeline executed successfully!")

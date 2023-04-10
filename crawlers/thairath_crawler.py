@@ -8,7 +8,7 @@ from utils.convert_datetime import split_thai_datetime_thairath
 
 class ThairathCrawler:
     BASE_URL = 'https://www.thairath.co.th'
-    NEWS_LIMIT = 20
+    NEWS_LIMIT = 1
     
     def __init__(self, limit=NEWS_LIMIT):
         self.limit = limit

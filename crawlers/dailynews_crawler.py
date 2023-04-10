@@ -5,7 +5,7 @@ from utils.convert_datetime import split_thai_datetime_dailynews
 
 class DailyNewsCrawler:
     BASE_URL = 'https://www.dailynews.co.th/wp-json/wp/v2/news'
-    NEWS_LIMIT = 20
+    NEWS_LIMIT = 1
     Page = 1
     def __init__(self, limit=NEWS_LIMIT,page=Page):
         self.headers = {
@@ -41,7 +41,7 @@ class DailyNewsCrawler:
                     title = clean(data['title']['rendered'])
                     excerpt = clean(data['acf']['custom_excerpt'])
                     content = clean(data['content']['rendered'])
-                    news_id = data['id']
+                    news_id = f"DLN_NEW_{data['id']}"
                     source = 'Dailynews'
                     date = data['date'].replace("T", " ")
                     news = clean(title + " " + excerpt + " " + content)
