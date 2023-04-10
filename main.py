@@ -2,6 +2,7 @@ from crawlers.thairath_crawler import ThairathCrawler
 from crawlers.dailynews_crawler import DailyNewsCrawler
 from crime_classification.crime_tagger import XLMRClassifier
 from database.database_connector import connect_to_db, insert_data_into_table
+from utils.province_extractor import get_province
 import pandas as pd 
 
 # Set up database connection
@@ -24,6 +25,11 @@ probs = classifier.predict([news[2] for news in merge_all_news])
 df_news = pd.DataFrame(merge_all_news, columns=['news_id','source','news','date'])
 df_predict = pd.DataFrame(probs, columns=['gambling', 'murder', 'sexual_abuse', 'theft/burglary', 'drug', 'battery/assault', 'accident', 'non-crime'])
 merged_df = pd.concat([df_news, df_predict], axis=1)
+
+# Get Province with PythaiNLP
+province_list = get_province(merged_df)
+merged_df['province'] = province_list
+
 
 # Insert data into the database
 insert_data_into_table(engine, merged_df)
