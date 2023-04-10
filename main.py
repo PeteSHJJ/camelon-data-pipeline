@@ -1,7 +1,7 @@
 from crawlers.thairath_crawler import ThairathCrawler
 from crawlers.dailynews_crawler import DailyNewsCrawler
 from crime_classification.crime_tagger import XLMRClassifier
-from database.database_connector import connect_to_db, insert_data_into_table
+from database.database_connector import connect_to_db, insert_data_into_table, update_summary_table
 from utils.province_extractor import get_province
 import pandas as pd 
 
@@ -33,6 +33,9 @@ merged_df['province'] = province_list
 
 # Insert data into the database
 insert_data_into_table(con, merged_df)
+
+# Update summary table 
+update_summary_table(con)
 
 # Print success message
 print("Data pipeline executed successfully!")
