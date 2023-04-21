@@ -8,14 +8,14 @@ from utils.convert_datetime import split_thai_datetime_thairath
 
 class ThairathCrawler:
     BASE_URL = 'https://www.thairath.co.th'
-    NEWS_LIMIT = 1
+    NEWS_LIMIT = 2500
     
     def __init__(self, limit=NEWS_LIMIT):
         self.limit = limit
 
     def fetch_news_data(self, timestamp, section='/news/crime'):
         """Fetches news data from Thairath API"""
-        response = requests.get(f'{self.BASE_URL}/loadmore', params={"section": section, "ts": timestamp, "limit": self.limit}).json()
+        response = requests.get(f'{self.BASE_URL}/loadmore', params={"section": section, "ts": timestamp, "limit": 500}).json()
         min_timestamp = response['minTs']
         news_items = response['items']
         return min_timestamp, news_items
@@ -42,13 +42,12 @@ class ThairathCrawler:
                 print(f'[Thairath] Loading Thairath News Content {len(news_result) + 1} : {item["title"]}')
                 id = item['id']
                 news_content = self.fetch_news_content(id)
-                date_obj = datetime.strptime(news_content[3], '%Y-%m-%d %H:%M:%S')
-                year = date_obj.strftime('%Y')
-                # year = 2021
-                if year == 2021:
+                if news_content and "2021" in str(news_content[3]):
                     print(f'[Thairath] Finished Loading {len(news_result)} contents because year is 2021')
                     return news_result
-                news_result.append(news_content)
+                news_result.append(news_content)       
+                if len(news_result) == self.limit:
+                    return news_result
             timestamp = min_timestamp
         print(f'[Thairath] Finished Loading {len(news_result)} contents')
         return news_result

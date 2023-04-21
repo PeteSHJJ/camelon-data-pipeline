@@ -1,10 +1,9 @@
-re
-pandas 
-requests 
+pandas
+requests
 numpy
 torch
 transformers
 sentencepiece
 pythainlp
 mysql-connector-python
-
+schedule
